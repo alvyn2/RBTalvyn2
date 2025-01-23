@@ -408,14 +408,14 @@ public class RedBlackTree{
       printTree(root.right, trunk, true);
 
       if (prev == null) {
-          trunk.str = "———";
+          trunk.str = "---";
       }
       else if (isLeft) {
-          trunk.str = ".———";
+          trunk.str = ".---";
           prev_str = "   |";
       }
       else {
-          trunk.str = "`———";
+          trunk.str = "`---";
           prev.str = prev_str;
       }
 
@@ -434,26 +434,132 @@ public class RedBlackTree{
   
   //---- Your part:
   // This should check for the four rules that ensure the tree is a Red Black Tree.
-  // 1 Every node is either red or black.
-  // 2 The root is black.
-  // 3 Every leaf (nil) is black.
+  // 1 Every node is either red or black.-unnecessary color is an attribute of node
+  // 2 The root is black.-necessary
+  // 3 Every leaf (nil) is black.-done
   // 4 If a node is red, then both its children are black.
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
   // To receive full credit you must explicitly check for each property! You may not assume anything based on the above implementation (which does ensure all these rules are followed)
   // you may wish to add some helper functions here.
+  
+//precondition
+//postcondition
   public boolean isRedBlack() {
-	  return false;
+    boolean is=false;
+    // 2 The root is black.-necessary
+    if(isBlack(root)==true){
+  // 4 If a node is red, then both its children are black.
+  Node n=root;
+    while(n.left!=null || n.right!=null){
+      if(isBlack(n)==false){
+        if(isBlack(n.left)&&isBlack(n.right)){
+          is=true;
+        }
+      }
+      n=n.left;
+    }
+  // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
+
+
+    }else{
+      is= false;
+    }
+
+	  return is;
   }
   
   
+//precondition
+//postcondition
   //This should return a string of comma separated keys that represents the shortest height path through the tree.
   //Perhaps this would be easier to do with some helper functions?
   public String shortestTruePath() {
+
 	  return "";
   }
   
+//precondition
+//postcondition
   //This returns the absolute value of the difference between the real height of the tree and its black height. 
   public int trueHeightDiff(){
-	  return 0;
+    return height()-blackHeight();
+	  //return 0;
   }
+
+//precondition
+//postcondition
+public int blackHeight(){
+  int h=0;
+  int lh=0;
+  int rh=0;
+Node n=root;
+  if(n==null){
+    return 0;
+  }
+  if(n.left==null && n.right==null){
+    return 1;
+  }
+  Node c=n.left;
+  while(c.left!=null){
+    c=c.left;
+    if(isBlack(c)){
+    lh++;
+    }
+  }
+  
+  c=n.right;
+  while(c.left!=null && c.right!=null){
+    c=c.right;
+    rh++;
+  }
+  c=n;
+  while(c.left!=null || c.right!=null){
+    if(c.left!=null ){
+      c=c.left;
+    }
+  }
+  return Math.max(lh,rh);
+}
+
+//precondition:
+//postcondition: height of the longest path to leaves is returned
+public int height(){
+  int h=0;
+  int lh=0;
+  int rh=0;
+
+  Node n=root;
+  if(n==null){
+    return 0;
+  }
+  if(n.left==null && n.right==null){
+    return 1;
+  }
+  Node c=n.left;
+  while(c.left!=null ){
+    c=c.left;
+    lh++;
+  }
+  c=n.left;
+  while(c.right!=null){
+    c=c.right;
+    rh++;
+  }
+  while(c.left!=null||c.right!=null){
+
+
+  }
+
+  return Math.max(lh,rh);
+
+}
+
+
+//precondition:
+//postcondition: height of the shortest path to leaves is returned
+public int shortestPath(Node n){//helper for shortesttruepath...
+  return 0;
+}
+//3 points for comments, conventions and formatting your code cleanly.
+
 }
