@@ -1,6 +1,8 @@
 //The following is one possible RedBlackTree implementation.
 //Much of this code is from Sven Woltmann's public GitHub repository. Thank you Mr. Woltmann for making your code available for educational purposes.
 
+import java.util.ArrayList;
+
 public class RedBlackTree{
 
   static final boolean RED = false;
@@ -451,15 +453,19 @@ public class RedBlackTree{
   // 4 If a node is red, then both its children are black.
   Node n=root;
     while(n.left!=null || n.right!=null){
-      if(isBlack(n)==false){
-        if(isBlack(n.left)&&isBlack(n.right)){
-          is=true;
-        }
+      if(checkChildren(n)){
+        is=true;
+      }else{
+        return false;
+      }if(n.left!=null && n.right!=null){
+       (n.left)(n.right);
+      }else if(n.left!=null){
+        n=n.left;
+      }else if(n.right!=null){
+        n=n.right;
       }
-      n=n.left;
     }
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
-
 
     }else{
       is= false;
@@ -467,7 +473,20 @@ public class RedBlackTree{
 
 	  return is;
   }
+
+
   
+  private boolean checkChildren(Node n){
+    if(isBlack(n)==false){
+      if(isBlack(n.left)&&isBlack(n.right)){
+        return true;
+      }else{
+        return false;
+      }
+    }else{
+      return true;
+    }
+  }
   
 //precondition
 //postcondition
@@ -475,12 +494,30 @@ public class RedBlackTree{
   //Perhaps this would be easier to do with some helper functions?
   public String shortestTruePath() {
 
+
 	  return "";
   }
+  private Node shortPathHelper(Node n){
+    int h=1;
+  if(n==null){
+    h= 0;
+  }else if(n.left==null && n.right==null){
+    h= 1;
+    return shortPathHelper(n);
+  }else if(n.left!=null&& n.right!=null){
+    h= Math.min(h+heightHelper(n.left),h+heightHelper(n.right));
+  }else if(n.left!=null){
+    h= h+heightHelper(n.left);
+  }else if(n.right!=null){
+    h= h+heightHelper(n.right);
+  }else{
+    h= h;
+  }
+  return n
+  }
   
-//precondition
-//postcondition
-  //This returns the absolute value of the difference between the real height of the tree and its black height. 
+//precondition: method is called
+//postcondition: returns the absolute value of the difference between the real height of the tree and its black height. 
   public int trueHeightDiff(){
     return height()-blackHeight();
 	  //return 0;
@@ -489,54 +526,70 @@ public class RedBlackTree{
 //precondition
 //postcondition
 public int blackHeight(){
-  int h=0;
-  int lh=0;
-  int rh=0;
-Node n=root;
-  if(n==null){
-    return 0;
-  }
-  if(n.left==null && n.right==null){
-    return 1;
-  }
-  Node c=n.left;
-  while(c.left!=null){
-    c=c.left;
-    if(isBlack(c)){
-    lh++;
-    }
-  }
-  
-  c=n.right;
-  while(c.left!=null && c.right!=null){
-    c=c.right;
-    rh++;
-  }
-  c=n;
-  while(c.left!=null || c.right!=null){
-    if(c.left!=null ){
-      c=c.left;
-    }
-  }
-  return Math.max(lh,rh);
+  return blackHeight(root);
 }
-
+private int blackHeight(Node n){
+  int h=1;
+  if(n==null){
+    return 1;
+  }else if(n.left==null && n.right==null){
+    if(isBlack(n)){
+      return 1;
+    }else{
+    return 0;
+    }
+  }else if(n.left!=null&& n.right!=null){
+    int left=h;
+    int right=h;
+    if(isBlack(n.left)){
+      left=h+blackHeight(n.left);
+    }else{
+      left=blackHeight(n.left);
+    }
+    if(isBlack(n.right)){
+      right=h+blackHeight(n.right);
+    }else{
+      right=blackHeight(n.right);
+    }
+    return Math.max(left,right);
+  }else if(n.left!=null){
+    if(isBlack(n.left)){
+    return h+blackHeight(n.left);
+  }else{
+    return blackHeight(n.left);
+  }
+  }else if(n.right!=null){
+    if(isBlack(n.left)){
+      return h+blackHeight(n.right);
+    }else{
+      return blackHeight(n.right);
+    }
+  }else{
+    return h;
+  }
+}
 //precondition:
 //postcondition: height of the longest path to leaves is returned
 public int height(){
-  int h=0;
-  int lh=0;
-  int rh=0;
-
   Node n=root;
+  /*  int h=0;
+  //int lh=0;
+  //int rh=0;
+  Node c=root;
+  
   if(n==null){
     return 0;
+  }else{
+    h=1;
+    //lh=1;
+    //rh=1;
   }
   if(n.left==null && n.right==null){
     return 1;
   }
-  Node c=n.left;
-  while(c.left!=null ){
+  */
+  /*Node c=n.left;
+  while(c.left!=null){
     c=c.left;
     lh++;
   }
@@ -545,15 +598,43 @@ public int height(){
     c=c.right;
     rh++;
   }
+    */
+ /*  c=n;
   while(c.left!=null||c.right!=null){
+    if(c.left!=null){
+      c=c.left;
+      h++;
+    }
 
-
+    if(c.right!=null){
+      c=c.left;
+      h++;
+    }
+    
   }
-
-  return Math.max(lh,rh);
+    */
+  //System.out.println("h"+h);
+  //return h;
+  return heightHelper(n);
 
 }
-
+private int heightHelper(Node n){
+  int h=1;
+  if(n==null){
+    return 0;
+  }else if(n.left==null && n.right==null){
+    return 1;
+  }else if(n.left!=null&& n.right!=null){
+    return Math.max(h+heightHelper(n.left),h+heightHelper(n.right));
+  }else if(n.left!=null){
+    return h+heightHelper(n.left);
+  }else if(n.right!=null){
+    return h+heightHelper(n.right);
+  }else{
+    return h;
+  }
+  //return 1;
+}
 
 //precondition:
 //postcondition: height of the shortest path to leaves is returned
