@@ -29,8 +29,9 @@ public class main {
 
 
 		tree.printTree();
-		System.out.println(tree.height());
-		System.out.println(tree.blackHeight());
-		System.out.println(tree.trueHeightDiff());
+		//System.out.println(tree.height());
+		//System.out.println(tree.blackHeight());
+		//System.out.println(tree.trueHeightDiff());
+		System.out.println("shortesttruePath:" + tree.shortestTruePath());
 	}
 }

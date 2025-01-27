@@ -457,13 +457,15 @@ public class RedBlackTree{
         is=true;
       }else{
         return false;
-      }if(n.left!=null && n.right!=null){
-       (n.left)(n.right);
+      }
+      n=traverse(n);
+      /*if(n.left!=null && n.right!=null){
+
       }else if(n.left!=null){
         n=n.left;
       }else if(n.right!=null){
         n=n.right;
-      }
+      }*/
     }
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
 
@@ -474,10 +476,21 @@ public class RedBlackTree{
 	  return is;
   }
 
-
+//isRed Black Helper functions
+  private Node traverse(Node n){
+    if(n.left!=null){
+      return n.left;
+    }else if(n.right!=null){
+      return n.right;
+    }else{
+      return n.left;//null
+    }
+    //return n;
+  }
   
+  //checks that if a node is red both its children are black
   private boolean checkChildren(Node n){
-    if(isBlack(n)==false){
+    if(isBlack(n)==false){//is red
       if(isBlack(n.left)&&isBlack(n.right)){
         return true;
       }else{
@@ -488,32 +501,47 @@ public class RedBlackTree{
     }
   }
   
-//precondition
-//postcondition
-  //This should return a string of comma separated keys that represents the shortest height path through the tree.
-  //Perhaps this would be easier to do with some helper functions?
+//precondition:
+//postcondition:  should return a string of comma separated keys that represents the shortest height path through the tree.
+
   public String shortestTruePath() {
+    Node n=root;
+    ArrayList<Node> l=new ArrayList<>();
+    String out="";
+    while(n!=null){
+      l.add(n);
+      n=shortPathHelper(n);
+    }
+    for(Node i:l){
+      out+=i.key+", ";
+    }
 
-
-	  return "";
+	  return out;
   }
+  //Perhaps this would be easier to do with some helper functions?
+  //shortestTruePath helper function
   private Node shortPathHelper(Node n){
     int h=1;
   if(n==null){
-    h= 0;
+    return null;
   }else if(n.left==null && n.right==null){
-    h= 1;
-    return shortPathHelper(n);
+    return n.right;
   }else if(n.left!=null&& n.right!=null){
-    h= Math.min(h+heightHelper(n.left),h+heightHelper(n.right));
+    h= Math.min(heightHelper(n.left),heightHelper(n.right));
+    if(h==heightHelper(n.left)){
+      return shortPathHelper(n.left);
+    }else if(h==heightHelper(n.right)){
+      return shortPathHelper(n.right);
+    }
   }else if(n.left!=null){
-    h= h+heightHelper(n.left);
+    return shortPathHelper(n.left);
   }else if(n.right!=null){
-    h= h+heightHelper(n.right);
+    return shortPathHelper(n.right);
   }else{
-    h= h;
+    return null;
   }
-  return n
+  System.out.println("shortpathhelper missed");
+    return n.left;
   }
   
 //precondition: method is called
@@ -572,49 +600,7 @@ private int blackHeight(Node n){
 //postcondition: height of the longest path to leaves is returned
 public int height(){
   Node n=root;
-  /*  int h=0;
-  //int lh=0;
-  //int rh=0;
-  Node c=root;
-  
-  if(n==null){
-    return 0;
-  }else{
-    h=1;
-    //lh=1;
-    //rh=1;
-  }
-  if(n.left==null && n.right==null){
-    return 1;
-  }
-  */
-  /*Node c=n.left;
-  while(c.left!=null){
-    c=c.left;
-    lh++;
-  }
-  c=n.left;
-  while(c.right!=null){
-    c=c.right;
-    rh++;
-  }
-    */
- /*  c=n;
-  while(c.left!=null||c.right!=null){
-    if(c.left!=null){
-      c=c.left;
-      h++;
-    }
 
-    if(c.right!=null){
-      c=c.left;
-      h++;
-    }
-    
-  }
-    */
-  //System.out.println("h"+h);
-  //return h;
   return heightHelper(n);
 
 }
@@ -636,11 +622,6 @@ private int heightHelper(Node n){
   //return 1;
 }
 
-//precondition:
-//postcondition: height of the shortest path to leaves is returned
-public int shortestPath(Node n){//helper for shortesttruepath...
-  return 0;
-}
 //3 points for comments, conventions and formatting your code cleanly.
 
 }
