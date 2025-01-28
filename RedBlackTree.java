@@ -444,8 +444,8 @@ public class RedBlackTree{
   // To receive full credit you must explicitly check for each property! You may not assume anything based on the above implementation (which does ensure all these rules are followed)
   // you may wish to add some helper functions here.
   
-//precondition
-//postcondition
+//precondition: root is not null
+//postcondition:returns true if tree is a red black tree and false if not
   public boolean isRedBlack() {
     boolean is=false;
     // 2 The root is black.-necessary
@@ -458,14 +458,14 @@ public class RedBlackTree{
       }else{
         return false;
       }
-      n=traverse(n);
-      /*if(n.left!=null && n.right!=null){
+//      n=traverse(n);
+      if(n.left!=null && n.right!=null){
 
       }else if(n.left!=null){
         n=n.left;
       }else if(n.right!=null){
         n=n.right;
-      }*/
+      }
     }
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
 
@@ -477,7 +477,7 @@ public class RedBlackTree{
   }
 
 //isRed Black Helper functions
-  private Node traverse(Node n){
+ /* private Node traverse(Node n){
     if(n.left!=null){
       return n.left;
     }else if(n.right!=null){
@@ -487,9 +487,14 @@ public class RedBlackTree{
     }
     //return n;
   }
+     */
   
   //checks that if a node is red both its children are black
   private boolean checkChildren(Node n){
+    boolean check=false;
+  if (n==null){
+  return true;
+}
     if(isBlack(n)==false){//is red
       if(isBlack(n.left)&&isBlack(n.right)){
         return true;
@@ -497,8 +502,27 @@ public class RedBlackTree{
         return false;
       }
     }else{
-      return true;
+      check= true;
     }
+
+    //if(n.left!=null && n.right!=null){
+      if(checkChildren(n.left) && checkChildren(n.right)){
+        return true;
+      }else{
+        return false;
+      } 
+    
+    /* }if(n.left!=null){
+      check=checkChildren(n.left);
+    }else if(n.right!=null){
+      check=checkChildren(n.right);
+    }
+   //else{
+     // return true;//null
+    //}
+
+*/
+    //return check;
   }
   
 //precondition:
@@ -513,6 +537,7 @@ public class RedBlackTree{
       n=shortPathHelper(n);
     }
     for(Node i:l){
+      
       out+=i.key+", ";
     }
 
@@ -596,7 +621,7 @@ private int blackHeight(Node n){
     return h;
   }
 }
-//precondition:
+//precondition:no conditions
 //postcondition: height of the longest path to leaves is returned
 public int height(){
   Node n=root;
@@ -604,6 +629,7 @@ public int height(){
   return heightHelper(n);
 
 }
+//recursively finds the height of the node
 private int heightHelper(Node n){
   int h=1;
   if(n==null){
