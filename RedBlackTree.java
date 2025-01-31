@@ -477,7 +477,8 @@ public class RedBlackTree{
       if(equalBlackHeight(n.left)){
         n=n.right;
       }else{
-      System.out.println("while loop ended inside helper");
+        System.out.println("left"+blackHeight(n.left)+"right"+blackHeight(n.right));
+        System.out.println("while loop ended inside helper");
         return false;
       }
     }else if(n.left!=null){
@@ -611,14 +612,14 @@ public int blackHeight(){
 private int blackHeight(Node n){
   int h=1;
   if(n==null){
-    return 1;
+    return 0;
   }else if(n.left==null && n.right==null){// base case
     if(isBlack(n)){
-      System.out.println("bh base case black");
+      //System.out.println("bh base case black");
       return 1;
     }else{
       
-      System.out.println("bh base case red");
+      //System.out.println("bh base case red");
       return 0;
     }
   }else if(n.left!=null&& n.right!=null){

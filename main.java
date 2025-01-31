@@ -11,20 +11,7 @@ public class main {
 		tree.insert(3);
 		tree.insert(4);
 		tree.insert(5);
-		tree.insert(9);
-		tree.insert(8);
-		tree.insert(7);
-		tree.insert(6);
-		tree.insert(11);
-		tree.insert(51);
-		tree.insert(52);
-		tree.insert(35);
-		tree.insert(46);
-		tree.insert(57);
-		tree.insert(98);
-		tree.insert(89);
-		tree.insert(70);
-		tree.insert(61);
+	
 		tree.insert(111);
 
 		System.out.println("start");
@@ -36,7 +23,7 @@ public class main {
 		//System.out.println("shortesttruePath:" + tree.shortestTruePath());
 		//System.out.println("end");
 		//System.out.println("isRedBlack:");
-		System.out.println("isRedBlack:"+tree.isRedBlack()+"ended");
+		System.out.println("isRedBlack:"+tree.isRedBlack());
 		System.out.println("end");
 	}
 }
