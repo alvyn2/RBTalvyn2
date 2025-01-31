@@ -525,18 +525,17 @@ public class RedBlackTree{
     //return check;
   }
   
-//precondition:
+//precondition: method is called
 //postcondition:  should return a string of comma separated keys that represents the shortest height path through the tree.
 
   public String shortestTruePath() {
     Node n=root;
-    ArrayList<Node> l=new ArrayList<>();
+    ArrayList<Node> list=new ArrayList<>();
     String out="";
-    while(n!=null){
-      l.add(n);
-      n=shortPathHelper(n);
-    }
-    for(Node i:l){
+
+      list=shortPathHelper(n,list);
+    
+    for(Node i:list){
       
       out+=i.key+", ";
     }
@@ -545,28 +544,29 @@ public class RedBlackTree{
   }
   //Perhaps this would be easier to do with some helper functions?
   //shortestTruePath helper function
-  private Node shortPathHelper(Node n){
-    int h=1;
+  private ArrayList<Node> shortPathHelper(Node n,ArrayList<Node> l){
+    int h;
+    l.add(n);
   if(n==null){
-    return null;
-  }else if(n.left==null && n.right==null){
-    return n.right;
-  }else if(n.left!=null&& n.right!=null){
-    h= Math.min(heightHelper(n.left),heightHelper(n.right));
+    System.out.println("pathhelperended");
+    return (l);
+  }else if(n.left!=null && n.right!=null){
+    h=Math.min(heightHelper(n.left),heightHelper(n.right));
     if(h==heightHelper(n.left)){
-      return shortPathHelper(n.left);
+      return shortPathHelper(n.left,l);
     }else if(h==heightHelper(n.right)){
-      return shortPathHelper(n.right);
+      return shortPathHelper(n.right,l);
     }
   }else if(n.left!=null){
-    return shortPathHelper(n.left);
+    return shortPathHelper(n.left,l);
   }else if(n.right!=null){
-    return shortPathHelper(n.right);
+    return shortPathHelper(n.right,l);
   }else{
-    return null;
+    System.out.println("pathhelperended");
+    return l;
   }
   System.out.println("shortpathhelper missed");
-    return n.left;
+    return l;
   }
   
 //precondition: method is called
