@@ -29,14 +29,14 @@ public class main {
 
 		System.out.println("start");
 		tree.printTree();
-		System.out.println("tree printed");
+		//System.out.println("tree printed");
 		System.out.println(tree.height());
-		//System.out.println(tree.blackHeight());
-		//System.out.println(tree.trueHeightDiff());
-		System.out.println("shortesttruePath:" + tree.shortestTruePath());
-		System.out.println("end");
-//		System.out.println("isRedBlack:");
-//		System.out.println("isRedBlack:"+tree.isRedBlack());
+		System.out.println(tree.blackHeight());
+		System.out.println(tree.trueHeightDiff());
+		//System.out.println("shortesttruePath:" + tree.shortestTruePath());
+		//System.out.println("end");
+		//System.out.println("isRedBlack:");
+		System.out.println("isRedBlack:"+tree.isRedBlack()+"ended");
 		System.out.println("end");
 	}
 }

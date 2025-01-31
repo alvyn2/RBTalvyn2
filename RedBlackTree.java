@@ -439,7 +439,7 @@ public class RedBlackTree{
   // 1 Every node is either red or black.-unnecessary color is an attribute of node
   // 2 The root is black.-necessary
   // 3 Every leaf (nil) is black.-done
-  // 4 If a node is red, then both its children are black.
+  // 4 If a node is red, then both its children are black.-done
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
   // To receive full credit you must explicitly check for each property! You may not assume anything based on the above implementation (which does ensure all these rules are followed)
   // you may wish to add some helper functions here.
@@ -447,47 +447,69 @@ public class RedBlackTree{
 //precondition: root is not null
 //postcondition:returns true if tree is a red black tree and false if not
   public boolean isRedBlack() {
-    boolean is=false;
+    boolean is=true;
     // 2 The root is black.-necessary
     if(isBlack(root)==true){
+      System.out.println("blackroot rule true");
   // 4 If a node is red, then both its children are black.
   Node n=root;
-    while(n.left!=null || n.right!=null){
+
       if(checkChildren(n)){
         is=true;
       }else{
         return false;
       }
-//      n=traverse(n);
-      if(n.left!=null && n.right!=null){
+      
+      System.out.println("red has black children rule true");
 
-      }else if(n.left!=null){
-        n=n.left;
-      }else if(n.right!=null){
-        n=n.right;
-      }
-    }
   // 5 For each node, all paths from the node to descendant leaves contain the same number of black nodes.
+  n=root;
+  while (n!=null){    
+    if(blackHeight(n.left)==blackHeight(n.right)){
+      is=true;
+  System.out.println("equal black height true");
+    }else{
+      System.out.println("left"+blackHeight(n.left)+"right"+blackHeight(n.right));
+      System.out.println("while loop ended inside");
+      return false;
+    }
+    if(n.left!=null&& n.right!=null){
+      if(equalBlackHeight(n.left)){
+        n=n.right;
+      }else{
+      System.out.println("while loop ended inside helper");
+        return false;
+      }
+    }else if(n.left!=null){
+      n=n.left;
+    }else if(n.right!=null){
+      n=n.right;
+    }else{
+      n=null;
+    }
+  }
+  System.out.println("while loop ended");
 
     }else{
-      is= false;
+      return false;
     }
 
 	  return is;
   }
 
 //isRed Black Helper functions
- /* private Node traverse(Node n){
-    if(n.left!=null){
-      return n.left;
-    }else if(n.right!=null){
-      return n.right;
+  private Boolean equalBlackHeight(Node n){
+    if(blackHeight(n.left)==blackHeight(n.right)){
+      
+  System.out.println("equal black height true");
+      return true;
     }else{
-      return n.left;//null
+      System.out.println("equal black height false");
+      return false;
     }
     //return n;
   }
-     */
+     
   
   //checks that if a node is red both its children are black
   private boolean checkChildren(Node n){
@@ -497,7 +519,7 @@ public class RedBlackTree{
 }
     if(isBlack(n)==false){//is red
       if(isBlack(n.left)&&isBlack(n.right)){
-        return true;
+        check= true;
       }else{
         return false;
       }
@@ -506,11 +528,15 @@ public class RedBlackTree{
     }
 
     //if(n.left!=null && n.right!=null){
+    if(check==true){
       if(checkChildren(n.left) && checkChildren(n.right)){
+       // System.out.println("children checked returned true");
         return true;
       }else{
+        System.out.println("children checked returned false");
         return false;
       } 
+    }
     
     /* }if(n.left!=null){
       check=checkChildren(n.left);
@@ -522,7 +548,7 @@ public class RedBlackTree{
     //}
 
 */
-    //return check;
+    return check;
   }
   
 //precondition: method is called
@@ -581,39 +607,50 @@ public class RedBlackTree{
 public int blackHeight(){
   return blackHeight(root);
 }
+
 private int blackHeight(Node n){
   int h=1;
   if(n==null){
     return 1;
-  }else if(n.left==null && n.right==null){
+  }else if(n.left==null && n.right==null){// base case
     if(isBlack(n)){
+      System.out.println("bh base case black");
       return 1;
     }else{
-    return 0;
+      
+      System.out.println("bh base case red");
+      return 0;
     }
   }else if(n.left!=null&& n.right!=null){
-    int left=h;
-    int right=h;
-    if(isBlack(n.left)){
-      left=h+blackHeight(n.left);
+    int left;
+    int right;
+    if(isBlack(n)){
+      left=1+blackHeight(n.left);
+      right=1+blackHeight(n.right);
+    }else{
+      left=blackHeight(n.left);
+      right=blackHeight(n.right);
+    }
+   /* if(isBlack(n.left)){
+      left=1+blackHeight(n.left);
     }else{
       left=blackHeight(n.left);
     }
     if(isBlack(n.right)){
-      right=h+blackHeight(n.right);
+      right=1+blackHeight(n.right);
     }else{
       right=blackHeight(n.right);
-    }
+    }*/
     return Math.max(left,right);
   }else if(n.left!=null){
     if(isBlack(n.left)){
-    return h+blackHeight(n.left);
+    return 1+blackHeight(n.left);
   }else{
     return blackHeight(n.left);
   }
   }else if(n.right!=null){
     if(isBlack(n.left)){
-      return h+blackHeight(n.right);
+      return 1+blackHeight(n.right);
     }else{
       return blackHeight(n.right);
     }
